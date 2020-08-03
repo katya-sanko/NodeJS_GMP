@@ -1,0 +1,20 @@
+{
+  "name": "nodejs_gmp",
+  "version": "1.0.0",
+  "description": "NodeJS GMP tasks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "task1": "nodemon src/task1_1.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katya-sanko/NodeJS_GMP.git"
+  },
+  "author": "Katya Sanko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/katya-sanko/NodeJS_GMP/issues"
+  },
+  "homepage": "https://github.com/katya-sanko/NodeJS_GMP#readme"
+}
