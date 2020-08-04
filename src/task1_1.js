@@ -1,5 +1,3 @@
-// console.log('hello world');
-
 process.stdin.setEncoding('utf8');
 
 process.stdin.on('readable', () => {
