@@ -1,0 +1,24 @@
+{
+  "name": "nodejs_gmp",
+  "version": "1.0.0",
+  "description": "module_2",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katya-sanko/NodeJS_GMP.git"
+  },
+  "author": "me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/katya-sanko/NodeJS_GMP/issues"
+  },
+  "homepage": "https://github.com/katya-sanko/NodeJS_GMP#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}
