@@ -1,9 +1,12 @@
 # NodeJS_GMP
+
 NodeJS GMP tasks
 
-*1✓ - module_1 branch
+#2  - module_2 branch
 
-*2  - module_2 branch
+```
+getAutoSuggestUsers /users?q=loginSubstr+limit
+```
 
 ## Getting started
 
@@ -14,8 +17,6 @@ npm install
 ```
 
 ## Serve
-
-Server can be run with
 
 ```
 npm start

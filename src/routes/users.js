@@ -8,15 +8,31 @@ let data = [
     { id: '1', login: 'Cappuccino',  password: 'cappuccino1', age: 30, isDeleted: false },
     { id: '2', login: 'Americano',  password: 'americano1', age: 27, isDeleted: false },
     { id: '3', login: 'Espresso',  password: 'espresso1', age: 35, isDeleted: false },
-    { id: '4', login: 'Doppio',  password: 'doppio1', age: 22, isDeleted: false }
+    { id: '4', login: 'Doppio',  password: 'doppio1', age: 22, isDeleted: false },
+    { id: '5', login: 'Frappuccino',  password: 'frappuccino1', age: 35, isDeleted: false }
 ];
+// get auto-suggest list from limitusers, sorted by login property
+// and filtered by loginSubstringin the login property
+let getAutoSuggestUsers = function (loginSubstring, limit) { // q=no+2
+    let filteredByLoginSubstring = data.filter(user => user.login.indexOf(loginSubstring) > -1);
+
+    if (filteredByLoginSubstring && filteredByLoginSubstring.length) {
+        return filteredByLoginSubstring.slice(0, parseInt(limit), 10).sort((a, b) => (a.login > b.login) ? 1 : -1);
+    }
+};
 
 // HTTP methods ↓↓ starts here.
 
 // READ
 // this api end-point of an API returns JSON data array
 router.get('/', function (req, res) {
-    res.status(200).json(data);
+    console.log(req.query);
+    if (req.query && Object.keys(req.query).length !== 0) { // ?q=<loginSubstring>+<limit>
+        [loginSubstring, limit] = req.query[Object.keys(req.query)[0]].split(' ');
+        res.status(200).json(getAutoSuggestUsers(loginSubstring, limit));
+    } else {
+        res.status(200).json(data);
+    }
 });
 
 // READ
@@ -39,9 +55,6 @@ router.get('/:id', function (req, res) {
 // this api end-point add new object to user list
 // that is add new object to `data` array
 router.post('/', function (req, res) {
-    // get userIds from data array
-    let userIds = data.map(user => user.id);
-
     // create new id (basically +1 of last user object)
     let newId = data.length.toString();
 
