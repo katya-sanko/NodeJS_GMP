@@ -19,8 +19,9 @@
   },
   "homepage": "https://github.com/katya-sanko/NodeJS_GMP#readme",
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "@hapi/joi": "^17.1.1",
+    "express": "^4.17.1",
+    "express-joi-validation": "^4.0.4-beta.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0"

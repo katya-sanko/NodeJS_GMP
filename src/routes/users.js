@@ -1,8 +1,9 @@
-// import required essentials
 const express = require('express');
-// create new router
 const router = express.Router();
-// create a JSON data array
+const schema = require('../schemas/users.post.schema');
+const validateSchema = require('../validators/customValidator');
+
+// predifined users array
 let data = [
     { id: '0', login: 'Latte',  password: 'latte1', age: 34, isDeleted: false },
     { id: '1', login: 'Cappuccino',  password: 'cappuccino1', age: 30, isDeleted: false },
@@ -11,8 +12,9 @@ let data = [
     { id: '4', login: 'Doppio',  password: 'doppio1', age: 22, isDeleted: false },
     { id: '5', login: 'Frappuccino',  password: 'frappuccino1', age: 35, isDeleted: false }
 ];
+
 // get auto-suggest list from limitusers, sorted by login property
-// and filtered by loginSubstringin the login property
+// and filtered by loginSubstringing the login property
 let getAutoSuggestUsers = function (loginSubstring, limit) { // q=no+2
     let filteredByLoginSubstring = data.filter(user => user.login.indexOf(loginSubstring) > -1);
 
@@ -26,7 +28,6 @@ let getAutoSuggestUsers = function (loginSubstring, limit) { // q=no+2
 // READ
 // this api end-point of an API returns JSON data array
 router.get('/', function (req, res) {
-    console.log(req.query);
     if (req.query && Object.keys(req.query).length !== 0) { // ?q=<loginSubstring>+<limit>
         [loginSubstring, limit] = req.query[Object.keys(req.query)[0]].split(' ');
         res.status(200).json(getAutoSuggestUsers(loginSubstring, limit));
@@ -54,7 +55,7 @@ router.get('/:id', function (req, res) {
 // CREATE
 // this api end-point add new object to user list
 // that is add new object to `data` array
-router.post('/', function (req, res) {
+router.post('/', validateSchema(schema), function (req, res) {
     // create new id (basically +1 of last user object)
     let newId = data.length.toString();
 
@@ -79,7 +80,7 @@ router.post('/', function (req, res) {
 // UPDATE
 // this api end-point update an existing user object
 // for that we get `id` and `login` from api end-point of user to update
-router.put('/:id', function (req, res) {
+router.put('/:id', validateSchema(schema), function (req, res) {
     // get user object match by `id`
     let found = data.find(function (user) {
         return user.id === req.params.id;
@@ -92,7 +93,7 @@ router.put('/:id', function (req, res) {
             login: req.body.login, // set value of `login` get from req
             password: req.body.password, // set value of `password` get from req
             age: parseInt(req.body.age), // set value of `age` get from req
-            isDeleted: req.body.deleted // set value of `deleted` get from req
+            isDeleted: req.body.isDeleted // set value of `isDeleted` get from req
         };
 
         // find index of found object from array of data
