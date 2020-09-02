@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 
 // import `users` from `routes` folder 
-const usersRouter = require('./routes/users');
+const usersRouter = require('./routers/users');
 
 // create new app
 const app = express();

@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const schema = require('../schemas/users.post.schema');
-const validateSchema = require('../validators/customValidator');
+const Joi = require('@hapi/joi');
+const validateSchema = require('../services/customValidator');
 
+const authenticate = require('../data-access/authenticate');
+
+authenticate.authenticate();
 // predifined users array
 let data = [
     { id: '0', login: 'Latte',  password: 'latte1', age: 34, isDeleted: false },
@@ -12,6 +15,14 @@ let data = [
     { id: '4', login: 'Doppio',  password: 'doppio1', age: 22, isDeleted: false },
     { id: '5', login: 'Frappuccino',  password: 'frappuccino1', age: 35, isDeleted: false }
 ];
+
+const schema = Joi.object().keys({
+    login: Joi.string().required(),  
+    password: Joi.string().alphanum().required(), 
+    age: Joi.number().integer().min(4).max(130).required(),
+    isDeleted: Joi.boolean()
+});
+
 
 // get auto-suggest list from limitusers, sorted by login property
 // and filtered by loginSubstringing the login property

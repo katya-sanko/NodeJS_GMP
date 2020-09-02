@@ -2,10 +2,10 @@
 
 NodeJS GMP tasks
 
-#2  - module_2 branch
+#3  - module_3 branch
 
 ```
-getAutoSuggestUsers /users?q=loginSubstr+limit
+REST service with PostgreSQL
 ```
 
 ## Getting started

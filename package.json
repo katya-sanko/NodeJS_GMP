@@ -21,7 +21,10 @@
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "express": "^4.17.1",
-    "express-joi-validation": "^4.0.4-beta.0"
+    "express-joi-validation": "^4.0.4-beta.0",
+    "pg": "^8.3.3",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.5"
   },
   "devDependencies": {
     "eslint": "^6.8.0"
