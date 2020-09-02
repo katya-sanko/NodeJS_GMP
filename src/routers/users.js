@@ -1,151 +1,105 @@
 const express = require('express');
 const router = express.Router();
-const Joi = require('@hapi/joi');
+const mapper = require('../data-access/mapper');
+
 const validateSchema = require('../services/customValidator');
 
-const authenticate = require('../data-access/authenticate');
 
-authenticate.authenticate();
-// predifined users array
-let data = [
-    { id: '0', login: 'Latte',  password: 'latte1', age: 34, isDeleted: false },
-    { id: '1', login: 'Cappuccino',  password: 'cappuccino1', age: 30, isDeleted: false },
-    { id: '2', login: 'Americano',  password: 'americano1', age: 27, isDeleted: false },
-    { id: '3', login: 'Espresso',  password: 'espresso1', age: 35, isDeleted: false },
-    { id: '4', login: 'Doppio',  password: 'doppio1', age: 22, isDeleted: false },
-    { id: '5', login: 'Frappuccino',  password: 'frappuccino1', age: 35, isDeleted: false }
-];
-
-const schema = Joi.object().keys({
-    login: Joi.string().required(),  
-    password: Joi.string().alphanum().required(), 
-    age: Joi.number().integer().min(4).max(130).required(),
-    isDeleted: Joi.boolean()
-});
+mapper.populateTable();
 
 
-// get auto-suggest list from limitusers, sorted by login property
-// and filtered by loginSubstringing the login property
-let getAutoSuggestUsers = function (loginSubstring, limit) { // q=no+2
-    let filteredByLoginSubstring = data.filter(user => user.login.indexOf(loginSubstring) > -1);
-
-    if (filteredByLoginSubstring && filteredByLoginSubstring.length) {
-        return filteredByLoginSubstring.slice(0, parseInt(limit), 10).sort((a, b) => (a.login > b.login) ? 1 : -1);
-    }
-};
 
 // HTTP methods ↓↓ starts here.
 
 // READ
-// this api end-point of an API returns JSON data array
+// this api end-point of an API returns all records
 router.get('/', function (req, res) {
-    if (req.query && Object.keys(req.query).length !== 0) { // ?q=<loginSubstring>+<limit>
-        [loginSubstring, limit] = req.query[Object.keys(req.query)[0]].split(' ');
-        res.status(200).json(getAutoSuggestUsers(loginSubstring, limit));
-    } else {
+    mapper.getRecords().then((data) => {
+        console.log('get records');
         res.status(200).json(data);
-    }
+    }).catch((err) => {
+        console.log('Failed to get records. See the log:');
+        console.log(err);
+    });
 });
 
 // READ
 // this api end-point returns an object from a data array find by id
 // we get `id` from URL end-points
 router.get('/:id', function (req, res) {
-    // find an object from `data` array match by `id`
-    let found = data.find(function (user) {
-        return user.id === req.params.id;
-    });
-    // if object found return an object else return 404 not-found
-    if (found) {
-        res.status(200).json(found);
-    } else {
+    mapper.getRecordById(req.params.id).then((data) => {
+        console.log('got record');
+        res.status(200).json(data);
+    }).catch((err) => {
         res.sendStatus(404);
-    }
+        console.log('Failed to get record by id. See the log:');
+        console.log(err);
+    });
 });
 
 // CREATE
-// this api end-point add new object to user list
-// that is add new object to `data` array
-router.post('/', validateSchema(schema), function (req, res) {
-    // create new id (basically +1 of last user object)
-    let newId = data.length.toString();
-
-    // create an object of new user
+// this api end-point add new record to user table
+router.post('/', validateSchema(), function (req, res) {
     let newuser = {
-        id: newId, // generated in above step
         login: req.body.login, // value of `login` get from POST req
         password: req.body.password, // value of `password` get from POST req
         age: parseInt(req.body.age), // value of `age` get from POST req
         isDeleted: false // default value is set to false
     };
 
-    // push new user object to data array of users
-    data.push(newuser);
-
-    // return with status 201
-    // 201 means Created. The request has been fulfilled and 
-    // has resulted in one or more new resources being created. 
-    res.status(201).json(newuser);
+    mapper.addRecord(newuser).then(() => {
+        console.log('new user saved');
+        // return with status 201
+        // 201 means Created. The request has been fulfilled and 
+        // has resulted in one or more new resources being created. 
+        res.status(201).json(newuser);
+    }).catch((err) => {
+        console.log('Failed to create a user. See the log:');
+        console.log(err);
+    });
 });
 
 // UPDATE
-// this api end-point update an existing user object
-// for that we get `id` and `login` from api end-point of user to update
-router.put('/:id', validateSchema(schema), function (req, res) {
-    // get user object match by `id`
-    let found = data.find(function (user) {
-        return user.id === req.params.id;
-    });
+// this api end-point update an existing user record
+router.put('/:id', validateSchema(), function (req, res) {
+    let record = {
+        login: req.body.login, // set value of `login` get from req
+        password: req.body.password, // set value of `password` get from req
+        age: parseInt(req.body.age), // set value of `age` get from req
+        isDeleted: req.body.isDeleted // set value of `isDeleted` get from req
+    };
 
-    // check if user found
-    if (found) {
-        let updated = {
-            id: found.id,
-            login: req.body.login, // set value of `login` get from req
-            password: req.body.password, // set value of `password` get from req
-            age: parseInt(req.body.age), // set value of `age` get from req
-            isDeleted: req.body.isDeleted // set value of `isDeleted` get from req
-        };
-
-        // find index of found object from array of data
-        let targetIndex = data.indexOf(found);
-
-        // replace object from data list with `updated` object
-        data.splice(targetIndex, 1, updated);
-
+    mapper.updateRecord(req.params.id, record).then(() => {
+        console.log('updated');
         // return with status 204
         // success status response code 204 indicates
         // that the request has succeeded
         res.sendStatus(204);
-    } else {
+    }).catch((err) => {
+        console.log('Failed to update a user. See the log:');
+        console.log(err);
         res.sendStatus(404);
-    }
+    });
 });
 
 // DELETE
-// this api end-point delete an existing user object from
-// array of data, match by `id` find user and then delete
+// as above
 router.delete('/:id', function (req, res) {
-    // find user from array of data
-    let found = data.find(function (user) {
-        return user.id === req.params.id;
+    let newProps  = {
+        isDeleted: true
+    };
+
+    mapper.updateRecord(req.params.id, newProps).then(() => {
+        console.log('deleted');
+        // return with status 204
+        // success status response code 204 indicates
+        // that the request has succeeded
+        res.sendStatus(204);
+    }).catch((err) => {
+        console.log('Failed to delete a user. See the log:');
+        console.log(err);
+        res.sendStatus(404);
     });
-
-    if (found) {
-        // if user found then find index at which the user is
-        // stored in the `data` array
-        let targetIndex = data.indexOf(found);
-
-        // splice means delete user from `data` array using index
-        data[targetIndex].isDeleted = true;
-    }
-
-    // return with status 204
-    // success status response code 204 indicates
-    // that the request has succeeded
-    res.sendStatus(204);
 });
 
-// module.exports is an object included in every JS file of Node.js
-// application, whatever we assign to module.exports will be exposed as a module. 
 module.exports = router;
