@@ -6,13 +6,6 @@ NodeJS GMP tasks
 
 The task is a continuation of Homework3 and done in the same repo. REST service with PostgreSQL
 
-```
-\d "Users"
-```
-
-```
-select * from "Users";
-```
 
 ## Getting started
 
@@ -28,8 +21,16 @@ npm install
 npm start
 ```
 
+## Notes
+
+To see Users and Groups tables:
 ```
 http://localhost:3000/users
 http://localhost:3000/groups
 ```
-update/ delete -> Postman
+
+To see the N-N table:
+```
+http://localhost:3000/userGroups
+```
+If group will be deleted with the Postman, also records containing it's id would be deleted from UserGroups table.

@@ -18,7 +18,7 @@ const groupMapper = {
             { name: 'Pessimist', permissions: [] }
         ];
 
-        sequelize.sync({ force: true }).then(() => {
+        return sequelize.sync({ force: true }).then(() => {
             Group.bulkCreate(groups, { validate: true }).then(() => {
                 console.log('Groups populated');
             }).catch((err) => {

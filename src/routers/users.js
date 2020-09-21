@@ -5,7 +5,7 @@ const userMapper = require('../data-access/userMapper');
 const validateSchema = require('../services/customValidator');
 
 
-userMapper.populateTable();
+//userMapper.populateTable();
 
 
 

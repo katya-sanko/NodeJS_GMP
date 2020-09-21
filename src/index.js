@@ -6,6 +6,8 @@ const express = require('express');
 const usersRouter = require('./routers/users');
 // import `groups` from `routes` folder 
 const groupsRouter = require('./routers/groups');
+// import `groups` from `routes` folder 
+const userGroupsRouter = require('./routers/userGroups');
 
 // create new app
 const app = express();
@@ -17,10 +19,11 @@ app.use(express.json());
 */
 app.use('/users', usersRouter);
 app.use('/groups', groupsRouter);
+app.use('/userGroups', userGroupsRouter);
 
 // default URL to API
 app.use('/', function(req, res) {
-    res.send('Hello there! Please go to the /users to see the list of users.');
+    res.send('/users /groups /userGroups');
 });
 
 const server = http.createServer(app);

@@ -31,7 +31,7 @@ userMapper.populateTable = function() {
 		{ login: 'Frappuccino',  password: 'frappuccino1', age: 35, isDeleted: false }
 	];
 	
-	sequelize.sync({ force: true }).then(() => {
+	return sequelize.sync({ force: true }).then(() => {
 		User.bulkCreate(users, { validate: true }).then(() => {
 			console.log('Users populated');
 		}).catch((err) => {
