@@ -1,20 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const userMapper = require('../data-access/userMapper');
+const groupMapper = require('../data-access/groupMapper');
 
 const validateSchema = require('../services/customValidator');
 
 
-userMapper.populateTable();
-
-
+groupMapper.bulkCreate();
 
 // HTTP methods ↓↓ starts here.
 
 // READ
 // this api end-point of an API returns all records
 router.get('/', function (req, res) {
-    userMapper.getRecords().then((data) => {
+    groupMapper.getRecords().then((data) => {
         console.log('get records');
         res.status(200).json(data);
     }).catch((err) => {
@@ -27,7 +25,7 @@ router.get('/', function (req, res) {
 // this api end-point returns an object from a data array find by id
 // we get `id` from URL end-points
 router.get('/:id', function (req, res) {
-    userMapper.getRecordById(req.params.id).then((data) => {
+    groupMapper.getRecordById(req.params.id).then((data) => {
         console.log('got record');
         res.status(200).json(data);
     }).catch((err) => {
@@ -38,45 +36,41 @@ router.get('/:id', function (req, res) {
 });
 
 // CREATE
-// this api end-point add new record to user table
+// this api end-point add new record to group table
 router.post('/', validateSchema(), function (req, res) {
-    let newuser = {
-        login: req.body.login, // value of `login` get from POST req
-        password: req.body.password, // value of `password` get from POST req
-        age: parseInt(req.body.age), // value of `age` get from POST req
-        isDeleted: false // default value is set to false
+    let newGroup = {
+        name: req.body.name, 
+        permissions: req.body.permissions
     };
 
-    userMapper.addRecord(newuser).then(() => {
-        console.log('new user saved');
+    groupMapper.addRecord(newGroup).then(() => {
+        console.log('new group saved');
         // return with status 201
         // 201 means Created. The request has been fulfilled and 
         // has resulted in one or more new resources being created. 
-        res.status(201).json(newuser);
+        res.status(201).json(newGroup);
     }).catch((err) => {
-        console.log('Failed to create a user. See the log:');
+        console.log('Failed to create a group. See the log:');
         console.log(err);
     });
 });
 
 // UPDATE
-// this api end-point update an existing user record
+// this api end-point update an existing group record
 router.put('/:id', validateSchema(), function (req, res) {
     let record = {
-        login: req.body.login, // set value of `login` get from req
-        password: req.body.password, // set value of `password` get from req
-        age: parseInt(req.body.age), // set value of `age` get from req
-        isDeleted: req.body.isDeleted // set value of `isDeleted` get from req
+        name: req.body.name, 
+        permissions: req.body.permissions
     };
 
-    userMapper.updateRecord(req.params.id, record).then(() => {
+    groupMapper.updateRecord(req.params.id, record).then(() => {
         console.log('updated');
         // return with status 204
         // success status response code 204 indicates
         // that the request has succeeded
         res.sendStatus(204);
     }).catch((err) => {
-        console.log('Failed to update a user. See the log:');
+        console.log('Failed to update a group. See the log:');
         console.log(err);
         res.sendStatus(404);
     });
@@ -85,18 +79,14 @@ router.put('/:id', validateSchema(), function (req, res) {
 // DELETE
 // as above
 router.delete('/:id', function (req, res) {
-    let newProps  = {
-        isDeleted: true
-    };
-
-    userMapper.updateRecord(req.params.id, newProps).then(() => {
+    groupMapper.deleteRecord(req.params.id).then(() => {
         console.log('deleted');
         // return with status 204
         // success status response code 204 indicates
         // that the request has succeeded
         res.sendStatus(204);
     }).catch((err) => {
-        console.log('Failed to delete a user. See the log:');
+        console.log('Failed to delete a group. See the log:');
         console.log(err);
         res.sendStatus(404);
     });

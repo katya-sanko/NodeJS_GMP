@@ -4,6 +4,8 @@ const express = require('express');
 
 // import `users` from `routes` folder 
 const usersRouter = require('./routers/users');
+// import `groups` from `routes` folder 
+const groupsRouter = require('./routers/groups');
 
 // create new app
 const app = express();
@@ -14,10 +16,11 @@ app.use(express.json());
 → localhost:3000/users/:id (this returns single object)
 */
 app.use('/users', usersRouter);
+app.use('/groups', groupsRouter);
 
 // default URL to API
 app.use('/', function(req, res) {
-    res.send('Hello there! Please go to the /user to see the list of users.');
+    res.send('Hello there! Please go to the /users to see the list of users.');
 });
 
 const server = http.createServer(app);

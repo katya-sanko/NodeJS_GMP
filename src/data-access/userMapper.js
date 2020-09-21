@@ -11,9 +11,9 @@ const User = sequelize.define('User', user, {
 // `sequelize.define` also returns the model
 console.log(User === sequelize.models.User); // true
 
-const mapper = {};
+const userMapper = {};
 
-mapper.createTable = function() {
+userMapper.createTable = function() {
 	User.sync().then(() => {
 		console.log('New table created');
 	}).finally(() => {
@@ -21,7 +21,7 @@ mapper.createTable = function() {
 	});
 };
 
-mapper.populateTable = function() {
+userMapper.populateTable = function() {
 	let users = [
 		{ login: 'Latte',  password: 'latte1', age: 34, isDeleted: false },
 		{ login: 'Cappuccino',  password: 'cappuccino1', age: 30, isDeleted: false },
@@ -44,20 +44,20 @@ mapper.populateTable = function() {
 
 };
 
-mapper.getRecords = function() {
+userMapper.getRecords = function() {
 	return User.findAll();
 };
 
-mapper.getRecordById = function(id) {
+userMapper.getRecordById = function(id) {
 	return User.findOne({ where: { id: id } });
 };
 
-mapper.addRecord = function(newUser) {
+userMapper.addRecord = function(newUser) {
 	return User.create(newUser);
 };
 
-mapper.updateRecord = function(id, newProps) {
+userMapper.updateRecord = function(id, newProps) {
 	return User.update(newProps, { where: { id: id } });
 };
 
-module.exports = mapper;
+module.exports = userMapper;

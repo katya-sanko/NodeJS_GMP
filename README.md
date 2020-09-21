@@ -30,5 +30,6 @@ npm start
 
 ```
 http://localhost:3000/users
-/c23e76d0-ed33-11ea-9083-5174929b95e3
+http://localhost:3000/groups
 ```
+update/ delete -> Postman
