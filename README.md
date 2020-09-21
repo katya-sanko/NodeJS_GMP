@@ -2,9 +2,9 @@
 
 NodeJS GMP tasks
 
-#3  - module_3 branch
+#4  - module_4 branch
 
-REST service with PostgreSQL
+The task is a continuation of Homework3 and done in the same repo. REST service with PostgreSQL
 
 ```
 \d "Users"
