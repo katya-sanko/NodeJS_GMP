@@ -1,3 +1,6 @@
+const logger = require('../services/customLogger');
+const MODULE_NAME = 'userGroupMapper.js';
+
 const { Sequelize } = require('sequelize');
 
 const user = require('../models/user.model');
@@ -33,15 +36,13 @@ const userGroupMapper = {
 
                     UserGroup.destroy({ truncate: true }).then(()=>{
                         UserGroup.bulkCreate(records, { validate: true }).then(() => {
-                            console.log('UserGroups populated');
+                            logger.info(`[${MODULE_NAME}]: bulkCreate() invoked with params <records> ${records}`);
                         }).catch((err) => {
-                            console.log('Failed to populate UserGroups');
-                            console.log(err);
+                            logger.error( `[${MODULE_NAME}]: Failed to populate UserGroups. See the log: ${err}`);
                         });
                     // sweet callback hell
                     }).catch((err) => {
-                        console.log('Failed to clear UserGroups');
-                        console.log(err);
+                        logger.error( `[${MODULE_NAME}]: Failed to clear UserGroups. See the log: ${err}`);
                     });
 
                 });
@@ -53,10 +54,12 @@ const userGroupMapper = {
     },
 
     getRecords () {
+        logger.info(`[${MODULE_NAME}]: findAll() invoked without params`);
         return UserGroup.findAll();
     },
 
     deleteRecordByGroupId (id) { // invoke this func when deleting group
+        logger.info(`[${MODULE_NAME}]: destroy() invoked with param <id> ${id}`);
         return UserGroup.destroy({ where: { groupId: id } });
     }
 };

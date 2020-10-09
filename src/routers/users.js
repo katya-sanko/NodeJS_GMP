@@ -3,11 +3,8 @@ const router = express.Router();
 const userMapper = require('../data-access/userMapper');
 
 const validateSchema = require('../services/customValidator');
-
-
-//userMapper.populateTable();
-
-
+const logger = require('../services/customLogger');
+const MODULE_NAME = 'users.js';
 
 // HTTP methods ↓↓ starts here.
 
@@ -15,11 +12,10 @@ const validateSchema = require('../services/customValidator');
 // this api end-point of an API returns all records
 router.get('/', function (req, res) {
     userMapper.getRecords().then((data) => {
-        console.log('get records');
         res.status(200).json(data);
+        logger.info(`[${MODULE_NAME}]: getRecords() invoked without params`);
     }).catch((err) => {
-        console.log('Failed to get records. See the log:');
-        console.log(err);
+        logger.error( `[${MODULE_NAME}]: Failed to get records. See the log: ${err}`);
     });
 });
 
@@ -28,12 +24,11 @@ router.get('/', function (req, res) {
 // we get `id` from URL end-points
 router.get('/:id', function (req, res) {
     userMapper.getRecordById(req.params.id).then((data) => {
-        console.log('got record');
         res.status(200).json(data);
+        logger.info(`[${MODULE_NAME}]: getRecordById() invoked with param <id> ${req.params.id}`);
     }).catch((err) => {
         res.sendStatus(404);
-        console.log('Failed to get record by id. See the log:');
-        console.log(err);
+        logger.error( `[${MODULE_NAME}]: Failed to get record by id. See the log: ${err}`);
     });
 });
 
@@ -48,14 +43,12 @@ router.post('/', validateSchema(), function (req, res) {
     };
 
     userMapper.addRecord(newuser).then(() => {
-        console.log('new user saved');
-        // return with status 201
-        // 201 means Created. The request has been fulfilled and 
+        // return with status 201 which means Created. The request has been fulfilled and 
         // has resulted in one or more new resources being created. 
         res.status(201).json(newuser);
+        logger.info(`[${MODULE_NAME}]: addRecord() invoked with param <newuser> ${newuser}`);
     }).catch((err) => {
-        console.log('Failed to create a user. See the log:');
-        console.log(err);
+        logger.error( `[${MODULE_NAME}]: Failed to create a user. See the log: ${err}`);
     });
 });
 
@@ -70,15 +63,14 @@ router.put('/:id', validateSchema(), function (req, res) {
     };
 
     userMapper.updateRecord(req.params.id, record).then(() => {
-        console.log('updated');
         // return with status 204
         // success status response code 204 indicates
         // that the request has succeeded
         res.sendStatus(204);
+        logger.info(`[${MODULE_NAME}]: updateRecord() invoked with params <id> ${req.params.id} <record> ${record}`);
     }).catch((err) => {
-        console.log('Failed to update a user. See the log:');
-        console.log(err);
         res.sendStatus(404);
+        logger.error( `[${MODULE_NAME}]: Failed to update a user. See the log: ${err}`);
     });
 });
 
@@ -90,15 +82,14 @@ router.delete('/:id', function (req, res) {
     };
 
     userMapper.updateRecord(req.params.id, newProps).then(() => {
-        console.log('deleted');
         // return with status 204
         // success status response code 204 indicates
         // that the request has succeeded
         res.sendStatus(204);
+        logger.info(`[${MODULE_NAME}]: updateRecord() invoked with params <id> ${req.params.id} <newProps> ${newProps}`);
     }).catch((err) => {
-        console.log('Failed to delete a user. See the log:');
-        console.log(err);
         res.sendStatus(404);
+        logger.error( `[${MODULE_NAME}]: Failed to mark user as deleted. See the log: ${err}`);
     });
 });
 

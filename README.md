@@ -2,9 +2,9 @@
 
 NodeJS GMP tasks
 
-#4  - module_4 branch
+#5  - module_5 branch
 
-The task is a continuation of Homework3 and done in the same repo. REST service with PostgreSQL
+The task is a continuation of Homework4 and done in the same repo. LOGGING & ERROR HANDLING
 
 
 ## Getting started
@@ -23,14 +23,18 @@ npm start
 
 ## Notes
 
-To see Users and Groups tables:
+Route map
 ```
 http://localhost:3000/users
 http://localhost:3000/groups
-```
-
-To see the N-N table:
-```
 http://localhost:3000/userGroups
 ```
-If group will be deleted with the Postman, also records containing it's id would be deleted from UserGroups table.
+
+## 5.1
+Created simple customLogger.js which uses winston logger with info/error levels under the hood. So substituted all console.log() with this logger.
+
+## 5.2
+...
+
+## 5.3
+...

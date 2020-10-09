@@ -4,7 +4,8 @@ const groupMapper = require('../data-access/groupMapper');
 const userGroupMapper = require('../data-access/userGroupMapper');
 
 const validateSchema = require('../services/customValidator');
-
+const logger = require('../services/customLogger');
+const MODULE_NAME = 'groups.js';
 
 // groupMapper.bulkCreate();
 
@@ -13,23 +14,21 @@ const validateSchema = require('../services/customValidator');
 // READ
 router.get('/', function (req, res) {
     groupMapper.getRecords().then((data) => {
-        console.log('get records');
         res.status(200).json(data);
+        logger.info(`[${MODULE_NAME}]: getRecords() invoked without params`);
     }).catch((err) => {
-        console.log('Failed to get records. See the log:');
-        console.log(err);
+        logger.error( `[${MODULE_NAME}]: Failed to get records. See the log: ${err}`);
     });
 });
 
 // READ
 router.get('/:id', function (req, res) {
     groupMapper.getRecordById(req.params.id).then((data) => {
-        console.log('got record');
         res.status(200).json(data);
+        logger.info(`[${MODULE_NAME}]: getRecordById() invoked with param <id> ${req.params.id}`);
     }).catch((err) => {
         res.sendStatus(404);
-        console.log('Failed to get record by id. See the log:');
-        console.log(err);
+        logger.error( `[${MODULE_NAME}]: Failed to get record by id. See the log: ${err}`);
     });
 });
 
@@ -41,12 +40,10 @@ router.post('/', validateSchema(), function (req, res) {
     };
 
     groupMapper.addRecord(newGroup).then(() => {
-        console.log('new group saved');
-
         res.status(201).json(newGroup);
+        logger.info(`[${MODULE_NAME}]: addRecord() invoked with param <newGroup> ${newGroup}`);
     }).catch((err) => {
-        console.log('Failed to create a group. See the log:');
-        console.log(err);
+        logger.error( `[${MODULE_NAME}]: Failed to create a group. See the log: ${err}`);
     });
 });
 
@@ -58,13 +55,11 @@ router.put('/:id', validateSchema(), function (req, res) {
     };
 
     groupMapper.updateRecord(req.params.id, record).then(() => {
-        console.log('updated');
-
         res.sendStatus(204);
+        logger.info(`[${MODULE_NAME}]: updateRecord() invoked with params <id> ${req.params.id} <record> ${record}`);
     }).catch((err) => {
-        console.log('Failed to update a group. See the log:');
-        console.log(err);
         res.sendStatus(404);
+        logger.error( `[${MODULE_NAME}]: Failed to update a group. See the log: ${err}`);
     });
 });
 
@@ -74,16 +69,14 @@ router.delete('/:id', function (req, res) {
     let groupId = req.params.id;
 
     groupMapper.deleteRecord(groupId).then(() => {
-        console.log('deleted');
         res.sendStatus(204);
-        // so here deleting from UserGroups too
+        logger.info(`[${MODULE_NAME}]: deleteRecord() invoked with param <groupId> ${groupId}`);
         userGroupMapper.deleteRecordByGroupId(groupId).then(()=> {
-            console.log('Records from UserGroup also deleted.');
+            logger.info(`[${MODULE_NAME}]: deleteRecordByGroupId() invoked with param <groupId> ${groupId}`);
         });
     }).catch((err) => {
-        console.log('Failed to delete a group. See the log:');
-        console.log(err);
         res.sendStatus(404);
+        logger.error( `[${MODULE_NAME}]: Failed to delete a group. See the log: ${err}`);
     });
 });
 
