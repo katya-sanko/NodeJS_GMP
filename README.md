@@ -34,7 +34,7 @@ http://localhost:3000/userGroups
 Created simple customLogger.js which uses winston logger with info/error levels under the hood. So substituted all console.log() with this logger.
 
 ## 5.2
-...
+Added middleware which logs unhandled errors and return a standard message with HTTPcode 500(Internal Server Error). Added error handling to process.on(‘uncaughtException’,...). Added Unhandled promise rejection listener to log errors.
 
 ## 5.3
 ...

@@ -1,3 +1,5 @@
+const logger = require('./services/customLogger');
+const MODULE_NAME = 'index.js';
 // import required essentials
 const http = require('http');
 const express = require('express');
@@ -22,12 +24,40 @@ app.use('/groups', groupsRouter);
 app.use('/userGroups', userGroupsRouter);
 
 // default URL to API
-app.use('/', function(req, res) {
-    res.send('/users /groups /userGroups');
+app.use('/', function (req, res) {
+	res.send('/users /groups /userGroups');
 });
+
+app.use(function (err, req, res, next) {
+	let date = new Date();
+	logger.error(`[${MODULE_NAME}]: Date: ${date}. Err: ${err.stack}`);
+	res.status(500).send('Internal Server Error');
+})
 
 const server = http.createServer(app);
 const port = 3000;
+
 server.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+	logger.info(`[${MODULE_NAME}]: Example app listening at http://localhost:${port}`);
+});
+
+server.on('error', (err, next) => {
+	let date = new Date();
+	logger.error(`[${MODULE_NAME}]: ServerError ]:} Date: ${date}. Err: ${err.stack}`);
+	next(err);
+	return;
+});
+
+process.on('uncaughtException', (err, next) => {
+	let date = new Date();
+	logger.error(`[${MODULE_NAME}]: Date: ${date}. Err: ${err.stack}`);
+	next(err);
+	return;
+});
+
+process.on('unhandledRejection', (err, next) => {
+	let date = new Date();
+	logger.error(`[${MODULE_NAME}]: Date: ${date}. Err: ${err.stack}`);
+	next(err);
+	return;
 });
