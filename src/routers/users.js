@@ -15,7 +15,7 @@ router.get('/', function (req, res) {
         res.status(200).json(data);
         logger.info(`[${MODULE_NAME}]: getRecords() invoked without params`);
     }).catch((err) => {
-        logger.error( `[${MODULE_NAME}]: Failed to get records. See the log: ${err}`);
+        logger.error( `[${MODULE_NAME}]: getRecords() failed. See the log: ${err}`);
     });
 });
 
@@ -28,7 +28,7 @@ router.get('/:id', function (req, res) {
         logger.info(`[${MODULE_NAME}]: getRecordById() invoked with param <id> ${req.params.id}`);
     }).catch((err) => {
         res.sendStatus(404);
-        logger.error( `[${MODULE_NAME}]: Failed to get record by id. See the log: ${err}`);
+        logger.error( `[${MODULE_NAME}]: getRecordById() failed. See the log: ${err}`);
     });
 });
 
@@ -48,7 +48,7 @@ router.post('/', validateSchema(), function (req, res) {
         res.status(201).json(newuser);
         logger.info(`[${MODULE_NAME}]: addRecord() invoked with param <newuser> ${newuser}`);
     }).catch((err) => {
-        logger.error( `[${MODULE_NAME}]: Failed to create a user. See the log: ${err}`);
+        logger.error( `[${MODULE_NAME}]: addRecord() failed. See the log: ${err}`);
     });
 });
 
@@ -70,7 +70,7 @@ router.put('/:id', validateSchema(), function (req, res) {
         logger.info(`[${MODULE_NAME}]: updateRecord() invoked with params <id> ${req.params.id} <record> ${record}`);
     }).catch((err) => {
         res.sendStatus(404);
-        logger.error( `[${MODULE_NAME}]: Failed to update a user. See the log: ${err}`);
+        logger.error( `[${MODULE_NAME}]: updateRecord() failed. See the log: ${err}`);
     });
 });
 
@@ -89,7 +89,7 @@ router.delete('/:id', function (req, res) {
         logger.info(`[${MODULE_NAME}]: updateRecord() invoked with params <id> ${req.params.id} <newProps> ${newProps}`);
     }).catch((err) => {
         res.sendStatus(404);
-        logger.error( `[${MODULE_NAME}]: Failed to mark user as deleted. See the log: ${err}`);
+        logger.error( `[${MODULE_NAME}]: updateRecord() failed. See the log: ${err}`);
     });
 });
 

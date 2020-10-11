@@ -38,11 +38,11 @@ const userGroupMapper = {
                         UserGroup.bulkCreate(records, { validate: true }).then(() => {
                             logger.info(`[${MODULE_NAME}]: bulkCreate() invoked with params <records> ${records}`);
                         }).catch((err) => {
-                            logger.error( `[${MODULE_NAME}]: Failed to populate UserGroups. See the log: ${err}`);
+                            logger.error( `[${MODULE_NAME}]: bulkCreate() failed. See the log: ${err}`);
                         });
                     // sweet callback hell
                     }).catch((err) => {
-                        logger.error( `[${MODULE_NAME}]: Failed to clear UserGroups. See the log: ${err}`);
+                        logger.error( `[${MODULE_NAME}]: destroy() failed. See the log: ${err}`);
                     });
 
                 });

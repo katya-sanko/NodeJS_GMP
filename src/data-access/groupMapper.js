@@ -22,7 +22,7 @@ const groupMapper = {
             Group.bulkCreate(groups, { validate: true }).then(() => {
                 logger.info(`[${MODULE_NAME}]: bulkCreate() invoked with params <groups> ${groups}`);
             }).catch((err) => {
-                logger.error( `[${MODULE_NAME}]: Failed to populate Groups. See the log: ${err}`);
+                logger.error( `[${MODULE_NAME}]: bulkCreate() failed. See the log: ${err}`);
             });
         });
 

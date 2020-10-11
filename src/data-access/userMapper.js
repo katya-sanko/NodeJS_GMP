@@ -30,7 +30,7 @@ userMapper.populateTable = function() {
 		User.bulkCreate(users, { validate: true }).then(() => {
 			logger.info(`[${MODULE_NAME}]: bulkCreate() invoked with params <users> ${users}`);
 		}).catch((err) => {
-			logger.error( `[${MODULE_NAME}]: Failed to populate Users. See the log: ${err}`);
+			logger.error( `[${MODULE_NAME}]: bulkCreate() failed. See the log: ${err}`);
 		});
 	});
 

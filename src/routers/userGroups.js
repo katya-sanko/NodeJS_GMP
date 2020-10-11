@@ -21,7 +21,7 @@ router.get('/', function (req, res) {
         res.status(200).json(data);
         logger.info(`[${MODULE_NAME}]: getRecords() invoked without params`);
     }).catch((err) => {
-        logger.error( `[${MODULE_NAME}]: Failed to get records. See the log: ${err}`);
+        logger.error( `[${MODULE_NAME}]: getRecords() failed. See the log: ${err}`);
     });
 });
 
