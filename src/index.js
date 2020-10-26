@@ -3,7 +3,8 @@ const MODULE_NAME = 'index.js';
 // import required essentials
 const http = require('http');
 const express = require('express');
-
+const cors = require('cors');
+const loginRouter = require('./routers/login');
 // import `users` from `routes` folder 
 const usersRouter = require('./routers/users');
 // import `groups` from `routes` folder 
@@ -15,17 +16,25 @@ const userGroupsRouter = require('./routers/userGroups');
 const app = express();
 app.use(express.json());
 
+let corsOptions = {
+    origin: 'http://localhost:8080',
+    optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
+
 /* this '/users' URL will have two end-points:
 → localhost:3000/users/ (this returns array of objects)
 → localhost:3000/users/:id (this returns single object)
 */
+app.use('/login', loginRouter);
 app.use('/users', usersRouter);
 app.use('/groups', groupsRouter);
 app.use('/userGroups', userGroupsRouter);
 
 // default URL to API
 app.use('/', function (req, res) {
-	res.send('/users /groups /userGroups');
+	res.send('Nihao');
 });
 
 app.use(function (err, req, res, next) {

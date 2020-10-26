@@ -2,9 +2,19 @@
 
 NodeJS GMP tasks
 
-#5  - module_5 branch
+#6  - module_6 branch
 
-The task is a continuation of Homework4 and done in the same repo. LOGGING & ERROR HANDLING
+The task is a continuation of Homework5and should be done in the same repo.
+
+TASK 6.1
+Add authorization to the already existing REST service.
+    • Add login(username, password)method which should return JWTtoken.
+    • Add a middleware which will proxy all the requests (except login) and check that HTTPAuthorizationheader has the correct value of JWTtoken.
+    • In case of the HTTPAuthorizationheader is absent in the request, themiddlewareshould stop further controller method execution and return HTTP401code (Unauthorized Error) and standard error message.
+    • In case of HTTPAuthorization headerhasinvalid JWTtoken in the request, the middleware should return HTTPcode 403(Forbidden Error) and standard error message.
+
+TASK 6.2
+    Add CORS middleware to access service methods from WEB applications hosted on another domains (https://github.com/expressjs/cors).
 
 
 ## Getting started
@@ -29,12 +39,3 @@ http://localhost:3000/users
 http://localhost:3000/groups
 http://localhost:3000/userGroups
 ```
-
-## 5.1
-Created simple customLogger.js which uses winston logger with info/error levels under the hood. So substituted all console.log() with this logger.
-
-## 5.2
-Added middleware which logs unhandled errors and return a standard message with HTTPcode 500(Internal Server Error). Added error handling to process.on(‘uncaughtException’,...). Added Unhandled promise rejection listener to log errors.
-
-## 5.3
-Added draft of error logging 

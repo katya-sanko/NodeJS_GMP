@@ -46,6 +46,11 @@ userMapper.getRecordById = function(id) {
 	return User.findOne({ where: { id: id } });
 };
 
+userMapper.getRecordForAuth = function(login, password) {
+	logger.info(`[${MODULE_NAME}]: Auth DB query.`);
+	return User.findOne({ where: { login: login, password: password } });
+};
+
 userMapper.addRecord = function(newUser) {
 	logger.info(`[${MODULE_NAME}]: create() invoked with param <newUser> ${newUser}`);
 	return User.create(newUser);
