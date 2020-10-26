@@ -4,8 +4,12 @@ const logger = require('./customLogger');
 
 function authenticateToken(req, res, next) {
     // Gather the jwt access token from the request header
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
+    console.log(req.headers);
+    const token = req.headers['authorization'];
+    console.log('**************************');
+    console.log(token);
+    console.log('**************************');
+
     if (token == null) {
         logger.error('Anauthorised');
         return res.sendStatus(401);  // if there isn't any token

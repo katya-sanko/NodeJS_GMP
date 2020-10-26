@@ -2,8 +2,9 @@ const logger = require('./services/customLogger');
 const MODULE_NAME = 'index.js';
 // import required essentials
 const http = require('http');
-const express = require('express');
 const cors = require('cors');
+const express = require('express');
+const router = express.Router();
 const loginRouter = require('./routers/login');
 // import `users` from `routes` folder 
 const usersRouter = require('./routers/users');
@@ -11,6 +12,7 @@ const usersRouter = require('./routers/users');
 const groupsRouter = require('./routers/groups');
 // import `groups` from `routes` folder 
 const userGroupsRouter = require('./routers/userGroups');
+const authenticateToken = require('./services/auth');
 
 // create new app
 const app = express();
@@ -28,6 +30,7 @@ app.use(cors(corsOptions));
 → localhost:3000/users/:id (this returns single object)
 */
 app.use('/login', loginRouter);
+app.use(/^\/(?!login).*/, authenticateToken);
 app.use('/users', usersRouter);
 app.use('/groups', groupsRouter);
 app.use('/userGroups', userGroupsRouter);
