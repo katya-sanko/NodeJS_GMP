@@ -34,7 +34,7 @@ router.get('/:id', function (req, res) {
 
 // CREATE
 // this api end-point add new record to user table
-router.post('/', validateSchema(), function (req, res) {
+router.post('/', function (req, res) {
     let newuser = {
         login: req.body.login, // value of `login` get from POST req
         password: req.body.password, // value of `password` get from POST req
@@ -54,7 +54,7 @@ router.post('/', validateSchema(), function (req, res) {
 
 // UPDATE
 // this api end-point update an existing user record
-router.put('/:id', validateSchema(), function (req, res) {
+router.put('/:id', function (req, res) {
     let record = {
         login: req.body.login, // set value of `login` get from req
         password: req.body.password, // set value of `password` get from req

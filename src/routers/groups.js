@@ -33,7 +33,7 @@ router.get('/:id', function (req, res) {
 });
 
 // CREATE
-router.post('/', validateSchema(), function (req, res) {
+router.post('/', function (req, res) {
     let newGroup = {
         name: req.body.name, 
         permissions: req.body.permissions
@@ -48,7 +48,7 @@ router.post('/', validateSchema(), function (req, res) {
 });
 
 // UPDATE
-router.put('/:id', validateSchema(), function (req, res) {
+router.put('/:id', function (req, res) {
     let record = {
         name: req.body.name, 
         permissions: req.body.permissions
@@ -71,9 +71,9 @@ router.delete('/:id', function (req, res) {
     groupMapper.deleteRecord(groupId).then(() => {
         res.sendStatus(204);
         logger.info(`[${MODULE_NAME}]: deleteRecord() invoked with param <groupId> ${groupId}`);
-        userGroupMapper.deleteRecordByGroupId(groupId).then(()=> {
-            logger.info(`[${MODULE_NAME}]: deleteRecordByGroupId() invoked with param <groupId> ${groupId}`);
-        });
+        // userGroupMapper.deleteRecordByGroupId(groupId).then(()=> {
+        //     logger.info(`[${MODULE_NAME}]: deleteRecordByGroupId() invoked with param <groupId> ${groupId}`);
+        // });
     }).catch((err) => {
         res.sendStatus(404);
         logger.error( `[${MODULE_NAME}]: deleteRecordByGroupId() failed. See the log: ${err}`);
