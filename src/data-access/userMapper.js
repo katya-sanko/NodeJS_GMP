@@ -5,7 +5,7 @@ const { Sequelize } = require('sequelize');
 const user = require('../models/user.model');
 
 // Passing a connection URI for postgres
-const sequelize = new Sequelize('postgres://rqlfyilj:UfAPfkv30_-czBUTz8d50Q8hUw6mzDiq@balarama.db.elephantsql.com:5432/rqlfyilj');
+const sequelize = new Sequelize(process.env.CONNECTION_STRING);
 
 const User = sequelize.define('User', user, {});
 const userMapper = {};

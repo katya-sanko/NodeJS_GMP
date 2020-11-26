@@ -5,7 +5,7 @@ const { Sequelize } = require('sequelize');
 const group = require('../models/group.model');
 
 // Passing a connection URI for postgres
-const sequelize = new Sequelize('postgres://rqlfyilj:UfAPfkv30_-czBUTz8d50Q8hUw6mzDiq@balarama.db.elephantsql.com:5432/rqlfyilj');
+const sequelize = new Sequelize(process.env.CONNECTION_STRING);
 
 const Group = sequelize.define('Group', group, {});
 
